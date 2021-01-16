@@ -1,4 +1,5 @@
 const express = require('express');
+const usersDB = require("../users/users-model");
 
 const router = express.Router();
 
@@ -39,3 +40,4 @@ router.get('/:id/posts', (req, res) => {
 });
 
 // do not forget to export the router
+module.exports = router;
