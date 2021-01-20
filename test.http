@@ -54,9 +54,13 @@ content-type: application/json
 
 ###
 
-GET http://localhost:5000/api/users/3/posts HTTP/1.1
+GET http://localhost:5000/api/users/10/posts HTTP/1.1
+
+###
+
+POST http://localhost:5000/api/users/10/posts HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Aragorn 07"
+    "text": "A famous Betazoid, Diana!"
 }

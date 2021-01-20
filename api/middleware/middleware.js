@@ -52,24 +52,14 @@ async function validatePostId(req, res, next) {
   }
 }
 
-async function validatePost(req, res, next) {
+function validatePost(req, res, next) {
   // do your magic!
   const post = req.body;
   if (!post) res.status(400).send({ message: "missing post data" });
   else {
     if (!post.text)
       res.status(400).send({ message: "missing required text field" });
-    if (!post.user_id) {
-      res.status(400).send({ message: "missing required user id field" });
-    } else {
-      try {
-        const user = await usersDB.getById(post.user_id);
-        if (!user) res.status(404).json({ message: "user not found" });
-        else next();
-      } catch (err) {
-        next(err);
-      }
-    }
+    next();
   }
 }
 

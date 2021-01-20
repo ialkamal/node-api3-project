@@ -1,6 +1,6 @@
 const express = require("express");
 const postsDB = require("../posts/posts-model");
-const { validatePost, validatePostId } = require("../middleware/middleware");
+const { validatePostId } = require("../middleware/middleware");
 
 const router = express.Router();
 
@@ -9,7 +9,11 @@ router.get("/", (req, res) => {
   postsDB
     .get()
     .then((posts) => res.status(200).send(posts))
-    .catch((err) => res.status(500).send("Can't get posts from server."));
+    .catch((err) =>
+      res
+        .status(500)
+        .json({ message: "Cant' get posts from the server.", error: err })
+    );
 });
 
 router.get("/:id", validatePostId, (req, res) => {
@@ -32,7 +36,7 @@ router.delete("/:id", validatePostId, async (req, res) => {
   }
 });
 
-router.put("/:id", validatePostId, validatePost, async (req, res, next) => {
+router.put("/:id", validatePostId, async (req, res, next) => {
   // do your magic!
   // this needs a middleware to verify post id
   const { id } = req.params;

@@ -1,8 +1,8 @@
 const express = require("express");
 const usersDB = require("../users/users-model");
+const postsDB = require("../posts/posts-model");
 const {
   validatePost,
-  validatePostId,
   validateUserId,
   validateUser,
 } = require("../middleware/middleware");
@@ -15,7 +15,7 @@ router.post("/", validateUser, (req, res) => {
   const user = req.body;
   usersDB
     .insert(user)
-    .then((newUser) => res.status(200).send(newUser))
+    .then((newUser) => res.status(201).send(newUser))
     .catch((err) => res.status(500).send("server failed.", err));
 });
 
@@ -44,7 +44,9 @@ router.delete("/:id", validateUserId, (req, res) => {
     .then((checkFlag) => {
       if (checkFlag === 1) res.status(204);
     })
-    .catch((err) => res.status(500).send("server failed.", err));
+    .catch((err) =>
+      res.status(500).json({ message: "server failed.", error: err })
+    );
 });
 
 router.put("/:id", validateUserId, validateUser, (req, res) => {
@@ -59,22 +61,26 @@ router.put("/:id", validateUserId, validateUser, (req, res) => {
     .then((checkFlag) => {
       if (checkFlag === 1) res.status(200).send({ id: Number(id), ...user });
     })
-    .catch((err) => res.status(500).send("server failed."));
+    .catch((err) =>
+      res.status(500).send({ message: "server failed.", error: err })
+    );
 });
 
 router.post("/:id/posts", validateUserId, validatePost, (req, res) => {
   // do your magic!
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
-  const { id } = req.params;
-  const user = req.body;
+  const user_id = req.params.id;
+  const post = req.body;
 
-  // usersDB
-  //   .update(id, user)
-  //   .then((checkFlag) => {
-  //     if (checkFlag === 1) res.status(200).send({ id: Number(id), ...user });
-  //   })
-  //   .catch((err) => res.status(500).send("server failed."));
+  postsDB
+    .insert({ ...post, user_id })
+    .then((newPost) => {
+      res.status(201).send(newPost);
+    })
+    .catch((err) =>
+      res.status(500).json({ message: "server failed.", error: err })
+    );
 });
 
 router.get("/:id/posts", validateUserId, (req, res) => {
@@ -83,7 +89,9 @@ router.get("/:id/posts", validateUserId, (req, res) => {
   usersDB
     .getUserPosts(req.params.id)
     .then((posts) => res.status(200).send(posts))
-    .catch((err) => res.status(500).send("server failed.", err));
+    .catch((err) =>
+      res.status(500).json({ message: "server failed.", error: err })
+    );
 });
 
 // do not forget to export the router
