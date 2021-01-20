@@ -1,10 +1,6 @@
 const express = require("express");
 const postsDB = require("../posts/posts-model");
-const {
-  validatePost,
-  validatePostId,
-  validateUserId,
-} = require("../middleware/middleware");
+const { validatePost, validatePostId } = require("../middleware/middleware");
 
 const router = express.Router();
 
@@ -36,20 +32,18 @@ router.delete("/:id", validatePostId, async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, validatePostId, res) => {
+router.put("/:id", validatePostId, validatePost, async (req, res, next) => {
   // do your magic!
   // this needs a middleware to verify post id
   const { id } = req.params;
   const changes = req.body;
-  console.log(id, changes);
 
   try {
-    const updatedPost = await postsDB.update(id, changes);
-    console.log(updatedPost);
-    res.status(200).send(updatedPost);
-    //if (count === 1) res.sendStatus(204);
+    const count = await postsDB.update(id, changes);
+    if (count === 1) res.status(200).send(changes);
+    else next("post wasn't updated correctly!");
   } catch (err) {
-    res.status(500).send("Can't delete post from server.");
+    res.status(500).send("Can't modify post from server.");
   }
 });
 

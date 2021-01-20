@@ -17,16 +17,18 @@ server.use("/api/users", usersRouter);
 server.use((err, req, res, next) => {
   console.error(err);
 
-  res
-    .status(500)
-    .json({
-      message: "There was an error performing the required operation",
-      error: err,
-    });
+  res.status(500).json({
+    message: "There was an error performing the required operation",
+    error: err,
+  });
 });
 
 server.get("/", (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
+});
+
+server.use((error, req, res, next) => {
+  res.status(400).json({ message: "The request failed", error });
 });
 
 module.exports = server;

@@ -40,10 +40,8 @@ function validateUser(req, res, next) {
 async function validatePostId(req, res, next) {
   // do your magic!
   const { id } = req.params;
-  console.log(id);
   try {
     const post = await postsDB.getById(id);
-    console.log(post);
     if (!post) res.status(404).send({ message: "post not found" });
     else {
       req.post = { ...post };
@@ -54,14 +52,24 @@ async function validatePostId(req, res, next) {
   }
 }
 
-function validatePost(req, res, next) {
+async function validatePost(req, res, next) {
   // do your magic!
   const post = req.body;
   if (!post) res.status(400).send({ message: "missing post data" });
   else {
     if (!post.text)
       res.status(400).send({ message: "missing required text field" });
-    next();
+    if (!post.user_id) {
+      res.status(400).send({ message: "missing required user id field" });
+    } else {
+      try {
+        const user = await usersDB.getById(post.user_id);
+        if (!user) res.status(404).json({ message: "user not found" });
+        else next();
+      } catch (err) {
+        next(err);
+      }
+    }
   }
 }
 

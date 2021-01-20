@@ -4,7 +4,7 @@ GET http://localhost:5000/api/posts HTTP/1.1
 
 ###
 
-GET http://localhost:5000/api/posts/5 HTTP/1.1
+GET http://localhost:5000/api/posts/2 HTTP/1.1
 
 ###
 
@@ -16,33 +16,47 @@ PUT http://localhost:5000/api/posts/2 HTTP/1.1
 content-type: application/json
 
 {
-    "text": "A wizard is never late, Frodo Baggins. Nor is he early. He arrives precisely when he means to.",
+    "text": "WoW, Gandalf, you're great! 6",
     "user_id": 1
 }
 
 ###
+// Users
 
-POST http://localhost:5000/api/posts/1/comments HTTP/1.1
+GET http://localhost:5000/api/users HTTP/1.1
+
+###
+GET http://localhost:5000/api/users/7 HTTP/1.1
+
+
+###
+
+DELETE  http://localhost:5000/api/users/96 HTTP/1.1
+
+###
+
+POST http://localhost:5000/api/users HTTP/1.1
 content-type: application/json
 
 {
-    "text": "You can not hide, I see you! There is no life, after me. Only!.. Death!"
+    "name": "Aragorn"
 }
 
 ###
 
-GET http://localhost:5000/api/posts/1/comments HTTP/1.1
-
-###
-
-DELETE http://localhost:5000/api/posts/11 HTTP/1.1
-
-###
-
-PUT http://localhost:5000/api/posts/10 HTTP/1.1
+PUT http://localhost:5000/api/users/10 HTTP/1.1
 content-type: application/json
 
 {
-    "title": "I think we should get off the road. Get off the road! Quick!",
-    "contents": "Not the beard!"
+    "name": "Aragorn 07"
+}
+
+
+###
+
+GET http://localhost:5000/api/users/3/posts HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Aragorn 07"
 }
