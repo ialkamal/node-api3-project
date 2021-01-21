@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const postsRouter = require("./posts/posts-router");
 const usersRouter = require("./users/users-router");
@@ -24,7 +25,7 @@ server.use((err, req, res, next) => {
 });
 
 server.get("/", (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
+  res.send(`<h2>${process.env.MESSAGE}</h2>`);
 });
 
 server.use((error, req, res, next) => {
