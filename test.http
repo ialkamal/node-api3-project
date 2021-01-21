@@ -1,0 +1,66 @@
+//Posts
+
+GET http://localhost:5000/api/posts HTTP/1.1
+
+###
+
+GET http://localhost:5000/api/posts/2 HTTP/1.1
+
+###
+
+DELETE http://localhost:5000/api/posts/37 HTTP/1.1
+
+###
+
+PUT http://localhost:5000/api/posts/2 HTTP/1.1
+content-type: application/json
+
+{
+    "text": "WoW, Gandalf, you're great! 6",
+    "user_id": 1
+}
+
+###
+// Users
+
+GET http://localhost:5000/api/users HTTP/1.1
+
+###
+GET http://localhost:5000/api/users/7 HTTP/1.1
+
+
+###
+
+DELETE  http://localhost:5000/api/users/96 HTTP/1.1
+
+###
+
+POST http://localhost:5000/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Aragorn"
+}
+
+###
+
+PUT http://localhost:5000/api/users/10 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Aragorn 07"
+}
+
+
+###
+
+GET http://localhost:5000/api/users/10/posts HTTP/1.1
+
+###
+
+POST http://localhost:5000/api/users/10/posts HTTP/1.1
+content-type: application/json
+
+{
+    "text": "A famous Betazoid, Diana!"
+}
